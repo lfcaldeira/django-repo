@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import MapSubmission
+from .models import Submissao
 
-admin.site.register(apps.MapSubmission)
+admin.site.register(Submissao)
