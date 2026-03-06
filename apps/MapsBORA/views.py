@@ -16,7 +16,7 @@ def index(request):
         status = request.POST.get('status')
 
         Submission.objects.create(
-            map_name = f"{map_name}" (by {mapper_name})", 
+            map_name = f"{map_name} (by {mapper_name})", 
             submitted_date=submitted_date,
             status=status
         )
