@@ -1,2 +1,2 @@
-# mapsbora
-map submissions in a queue
+# django-repo
+apps built in django
