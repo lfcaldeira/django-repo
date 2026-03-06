@@ -1,14 +1,25 @@
 from django.db import models
 
-class Submissao(models.Model):
-    name = models.CharField(max_length=200)
+class Submission(models.Model):
+    STATUS_CHOICES = [
+        ('pending','Pending'),
+        ('approved','Approved'),
+        ('rejected','Rejected'),
+        ('completed', 'Completed')
+    ]
+    submitter_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    map_name = models.CharField(max_length=300)
+    description = models.CharField(max_length=400)
+    submitted_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
 
     def __str__(self):
-        return self.name
+        return f"{self.submitter_name} - {map_name}"
 
     class Meta:
-        verbose_name_plural = "Submissões"
-        ordering = ['creation_date']
+        verbose_name_plural = "submissions"
+        verbose_name = "submission"
+        ordering = ['submitted_date']
+    
 
