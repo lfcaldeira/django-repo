@@ -8,6 +8,20 @@ def submission_list(request):
     return render(request, 'MapsBORA/queue.html', {'queue':queue})
 
 def index(request):
+
+    if request.method == 'POST':
+        map_name = request.POST.get('map_name')
+        mapper_name = request.POST.get('mapper_name')
+        submitted_date = request.POST.get('submitted_date')
+        status = request.POST.get('status')
+
+        Submission.objects.create(
+            map_name = f"{map_name}" (by {mapper_name})", 
+            submitted_date=submitted_date,
+            status=status
+        )
+        return redirect('index')
+
     submissions = Submission.objects.all().order_by('submitted_date')
 
     return render(request, 'MapsBORA/index.html', {

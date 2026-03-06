@@ -1,44 +1,95 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MapsBORA - Fila de Mapas</title>
+    <title>MapsBORA - Map Scheduling</title>
     <style>
-        body { font-family: sans-serif; margin: 40px; background: #f4f4f4; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background: #f8f9fa; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; }
+        
+        /* Form Styling */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background-color: #218838; }
+
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
         th { background-color: #007bff; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .status-pending { color: orange; font-weight: bold; }
-        .status-approved { color: green; font-weight: bold; }
+        .status-pending { color: #f39c12; }
+        .status-approved { color: #27ae60; }
+        hr { margin: 40px 0; border: 0; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
-    <h1>MapsBORA - Map Submissions</h1>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Mapper</th>
-                <th>Map Name</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sub in submissions %}
-            <tr>
-                <td>{{ sub.map_name }}</td>
-                <td>{{ sub.location }}</td>
-                <td>{{ sub.requested_date|date:"d/m/Y" }}</td>
-                <td class="status-{{ sub.status }}">{{ sub.get_status_display }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">There isn't maps in queue.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>MapsBORA System</h1>
+        
+        <h2>Submit New Map Request</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="mapper_name">Mapper Name:</label>
+                <input type="text" id="mapper_name" name="mapper_name" placeholder="Who are you?" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="map_name">Map Name:</label>
+                <input type="text" id="map_name" name="map_name" placeholder="Title of the map" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location / Area:</label>
+                <input type="text" id="location" name="location" placeholder="Where is this map located?" required>
+            </div>
+
+            <div class="form-group">
+                <label for="requested_date">Execution Date:</label>
+                <input type="date" id="requested_date" name="requested_date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Initial Status:</label>
+                <select id="status" name="status">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+
+            <button type="submit">Submit to Queue</button>
+        </form>
+
+        <hr>
+
+        <h2>Scheduled Maps Queue</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Map Info</th>
+                    <th>Location</th>
+                    <th>Scheduled Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sub in submissions %}
+                <tr>
+                    <td><strong>{{ sub.map_name }}</strong></td>
+                    <td>{{ sub.location }}</td>
+                    <td>{{ sub.requested_date|date:"Y-m-d" }}</td>
+                    <td class="status-{{ sub.status }}">{{ sub.get_status_display }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center;">No submissions found in the queue.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

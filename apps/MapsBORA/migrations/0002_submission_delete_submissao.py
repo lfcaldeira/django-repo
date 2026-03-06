@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             name='Submission',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('submitter_name', models.CharField(max_length=200)),
+                ('mapper_name', models.CharField(max_length=200)),
                 ('email', models.CharField(max_length=200)),
                 ('map_name', models.CharField(max_length=300)),
                 ('description', models.CharField(max_length=400)),

@@ -7,7 +7,7 @@ class Submission(models.Model):
         ('rejected','Rejected'),
         ('completed', 'Completed')
     ]
-    submitter_name = models.CharField(max_length=200)
+    mapper_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     map_name = models.CharField(max_length=300)
     description = models.CharField(max_length=400)
@@ -15,7 +15,7 @@ class Submission(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
 
     def __str__(self):
-        return f"{self.submitter_name} - {map_name}"
+        return f"{self.mapper_name} - {map_name}"
 
     class Meta:
         verbose_name_plural = "submissions"
