@@ -13,7 +13,7 @@ def index(request):
         map_name = request.POST.get('map_name')
         mapper_name = request.POST.get('mapper_name')
         submitted_date = request.POST.get('submitted_date')
-        status = request.POST.get('status')
+        status = 'Pending'
 
         Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
