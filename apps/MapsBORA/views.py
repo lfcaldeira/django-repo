@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Submissao
+from .models import Submission
 
 
-def lista_submissoes(request):
-    queue = Submissao.objects.all()
+def submission_list(request):
+    queue = Submission.objects.all()
     return render(request, 'MapsBORA/queue.html', {'queue':queue})
 
