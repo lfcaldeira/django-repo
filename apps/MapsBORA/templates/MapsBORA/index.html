@@ -42,13 +42,8 @@
             </div>
 
             <div class="form-group">
-                <label for="location">Location / Area:</label>
-                <input type="text" id="location" name="location" placeholder="Where is this map located?" required>
-            </div>
-
-            <div class="form-group">
-                <label for="requested_date">Execution Date:</label>
-                <input type="date" id="requested_date" name="requested_date" required>
+                <label for="submitted_date">Which Tuesday are we riding:</label>
+                <input type="date" id="submitted_date" name="submitted_date" required>
             </div>
 
             <div class="form-group">
@@ -80,7 +75,7 @@
                 <tr>
                     <td><strong>{{ sub.map_name }}</strong></td>
                     <td>{{ sub.location }}</td>
-                    <td>{{ sub.requested_date|date:"Y-m-d" }}</td>
+                    <td>{{ sub.submitted_date|date:"Y-m-d" }}</td>
                     <td class="status-{{ sub.status }}">{{ sub.get_status_display }}</td>
                 </tr>
                 {% empty %}
