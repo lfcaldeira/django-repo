@@ -10,6 +10,6 @@ def submission_list(request):
 def index(request):
     submissions = Submission.objects.all().order_by('submitted_date')
 
-    return render(request, 'MapsBORA/index.html'. {
+    return render(request, 'MapsBORA/index.html', {
         'submissions': submissions
     })
