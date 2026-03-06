@@ -1,0 +1,12 @@
+<h1>Fila de Submissões</h1>
+<ul>
+    {% for item in fila %}
+        <li>
+            <strong>{{ item.nome }}</strong> - 
+            <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
+            <small>({{ item.data_criacao|date:"H:i" }})</small>
+        </li>
+    {% empty %}
+        <li>A fila está vazia.</li>
+    {% endfor %}
+</ul>
