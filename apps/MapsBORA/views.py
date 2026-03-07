@@ -4,6 +4,7 @@ from .models import Submission
 import random, string
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from datetime import datetime, timedelta
 
 
 def get_token(length=10):
@@ -16,14 +17,26 @@ def submission_list(request):
 
 def index(request):
 
+    next_tuesdays = []
+    today = datetime.now().date()
+
+    days_until_tuesday = (1 - today.weekday()) % 7
+    first_tuesday = today + timedelta(days=days_until_tuesday)
+
+    for i in range(10):
+        next_tuesdays.append(first_tuesday+timedelta(weeks=i))
+
     if request.method == 'POST':
         map_name = request.POST.get('map_name')
         mapper_name = request.POST.get('mapper_name')
         request_date = request.POST.get('request_date')
         status = 'Pending'
 
-        if Submission.objects.filter(request_date=request_date).exists() or Submission.objects.filter(map_name__icontains=map_name).exists():
-            messages.error(request, "Date or Map name already on list, please pick fill out another form")
+        if Submission.objects.filter(request_date=request_date).exists():
+            messages.error(request, "This Tuesday is already occupied")
+            return redirect("index")
+        if Submission.objects.filter(map_name__icontains=map_name).exists():
+            messages.error(request, "This map is in the list to be ridden")
             return redirect("index")
 
         new_submission = Submission.objects.create(
@@ -38,7 +51,8 @@ def index(request):
     submissions = Submission.objects.all().order_by('request_date')
 
     return render(request, 'MapsBORA/index.html', {
-        'submissions': submissions
+        'submissions': submissions,
+        'next_tuesdays': next_tuesdays
     })
 
 def edit_submission(request, id):
