@@ -43,7 +43,7 @@ def edit_submission(request, id):
         messages.success(request,"this is the token"+word)
 
         if word == submission.token:
-            submission.mapper_name = request.POST.get('mapper_name')
+            #submission.mapper_name = request.POST.get('mapper_name')
             submission.map_name = request.POST.get('map_name')
             submission.description = request.POST.get('description')
             submission.save()
