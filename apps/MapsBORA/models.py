@@ -12,7 +12,7 @@ class Submission(models.Model):
     email = models.CharField(max_length=200)
     map_name = models.CharField(max_length=300)
     description = models.CharField(max_length=400)
-    request_date = models.DateField(auto_now_add=True)
+    request_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     token = models.CharField(max_length=10,null=True, blank=True)
 
