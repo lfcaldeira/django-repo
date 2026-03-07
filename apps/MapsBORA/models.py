@@ -12,7 +12,7 @@ class Submission(models.Model):
     email = models.CharField(max_length=200)
     map_name = models.CharField(max_length=300)
     description = models.CharField(max_length=400)
-    submitted_date = models.DateTimeField(auto_now_add=True)
+    request_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     token = models.CharField(max_length=10,null=True, blank=True)
 
@@ -22,4 +22,4 @@ class Submission(models.Model):
     class Meta:
         verbose_name_plural = "submissions"
         verbose_name = "submission"
-        ordering = ['submitted_date']
+        ordering = ['request_date']

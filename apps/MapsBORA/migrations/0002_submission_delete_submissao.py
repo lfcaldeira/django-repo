@@ -18,13 +18,13 @@ class Migration(migrations.Migration):
                 ('email', models.CharField(max_length=200)),
                 ('map_name', models.CharField(max_length=300)),
                 ('description', models.CharField(max_length=400)),
-                ('submitted_date', models.DateTimeField(auto_now_add=True)),
+                ('request_date', models.DateTimeField(auto_now_add=True)),
                 ('status', models.CharField(choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected'), ('completed', 'Completed')], default='pending', max_length=20)),
             ],
             options={
                 'verbose_name': 'submission',
                 'verbose_name_plural': 'submissions',
-                'ordering': ['submitted_date'],
+                'ordering': ['request_date'],
             },
         ),
         migrations.DeleteModel(

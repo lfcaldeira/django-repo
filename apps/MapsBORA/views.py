@@ -17,19 +17,19 @@ def index(request):
     if request.method == 'POST':
         map_name = request.POST.get('map_name')
         mapper_name = request.POST.get('mapper_name')
-        submitted_date = request.POST.get('submitted_date')
+        request_date = request.POST.get('request_date')
         status = 'Pending'
 
         new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
-            submitted_date=submitted_date,
+            request_date=request_date,
             status=status,
             token=get_token(10)
         )
         messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token}')
         return redirect('index')
 
-    submissions = Submission.objects.all().order_by('submitted_date')
+    submissions = Submission.objects.all().order_by('request_date')
 
     return render(request, 'MapsBORA/index.html', {
         'submissions': submissions
@@ -43,9 +43,9 @@ def edit_submission(request, id):
         messages.success(request,"this is the token"+word)
 
         if word == submission.token:
-            #submission.mapper_name = request.POST.get('mapper_name')
             submission.map_name = request.POST.get('map_name')
             submission.description = request.POST.get('description')
+            submission.request_date = request.POST.get('request_date')
             submission.save()
             messages.success(request, "Map updated successfully")
             return redirect('index')
