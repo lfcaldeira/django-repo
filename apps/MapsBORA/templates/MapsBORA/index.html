@@ -58,7 +58,7 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-primary text-uppercase">Escolhe a Terça-feira (Slot Picker)</label>
                         <select name="request_date" class="form-select slot-picker" required>
-                            {% for data in proximas_tercas %}
+                            {% for data in next_tuesdays %}
                                 <option value="{{ data|date:'Y-m-d' }}">
                                     {{ data|date:"l, d M" }}
                                 </option>
