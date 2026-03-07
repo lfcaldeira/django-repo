@@ -4,7 +4,7 @@ from .models import Submission
 import random, string
 from django.contrib import messages
 
-def randomword(length=10):
+def get_token(length=10):
    letters = string.ascii_lowercase + string.digits # Adicionei números para ser mais seguro
    return ''.join(random.choice(letters) for i in range(length))
 
@@ -24,7 +24,7 @@ def index(request):
             map_name = f"{map_name} (by {mapper_name})", 
             submitted_date=submitted_date,
             status=status,
-            randomword=randomword(10)
+            randomword=get_token(10)
         )
         messages.success(request, f'Submission successful! Your tracking code is: {edit_submission.randomword}')
         return redirect('index')
