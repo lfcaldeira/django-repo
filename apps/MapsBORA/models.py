@@ -11,7 +11,7 @@ class Submission(models.Model):
     mapper_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     map_name = models.CharField(max_length=300)
-    map_url = models.URLField(max_length=300)
+    map_url = models.URLField(max_length=300, blank=True, null=True)
     description = models.CharField(max_length=400)
     request_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
