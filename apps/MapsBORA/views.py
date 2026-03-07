@@ -29,6 +29,7 @@ def index(request):
     if request.method == 'POST':
         map_name = request.POST.get('map_name')
         mapper_name = request.POST.get('mapper_name')
+        map_url = request.POST.get('map_url')
         request_date = request.POST.get('request_date')
         status = 'Pending'
 
@@ -41,6 +42,7 @@ def index(request):
 
         new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
+            map_url = map_url
             request_date=request_date,
             status=status,
             token=get_token(10)
