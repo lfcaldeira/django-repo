@@ -49,7 +49,7 @@ def edit_submission(request, id):
             messages.success(request, "Map updated successfully")
             return redirect('index')
         else:
-            messages.error("Invalid token! You cannot edit this map.")
+            messages.error(request, "Invalid token! You cannot edit this map.")
             return redirect('index')
 
     return render(request, 'MapsBORA/edit.html',{'submissions': submission})
