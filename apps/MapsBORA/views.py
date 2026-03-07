@@ -20,6 +20,10 @@ def index(request):
         request_date = request.POST.get('request_date')
         status = 'Pending'
 
+        if Submission.objects.filter(request_date=request_date).exists():
+            messages.error(request, "Date is already chosen, please pick another date")
+            return redirect("index")
+
         new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
             request_date=request_date,
@@ -40,7 +44,6 @@ def edit_submission(request, id):
 
     if request.method == 'POST':
         word = request.POST.get('token')
-        messages.success(request,"this is the token"+word)
 
         if word == submission.token:
             submission.map_name = request.POST.get('map_name')
