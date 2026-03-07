@@ -1,17 +1,55 @@
-<h2>Edit Map: {{ submission.map_name }}</h2>
-<form method="POST">
-    {% csrf_token %}
-    <p>To authorize changes, please enter the 10-letter token you received:</p>
-    <input type="text" name="token" placeholder="Enter Token" required>
-    
-    <hr>
-    <label>Map Name:</label>
-    <input type="text" name="map_name" value="{{ submission.map_name }}">
-    
-    <label>Description:</label>
-    <textarea name="description">{{ submission.description }}</textarea>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar: {{ submission.map_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; padding-top: 50px; }
+        .edit-card { max-width: 600px; margin: auto; border-radius: 15px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
 
-    <label>New Request Date</label>
-    <input type="date" name="request_date" value="{{ submission.request_date|date:'Y-m-d' }}">    
-    <button type="submit">Save Changes</button>
-</form>
+<div class="container">
+    <div class="card edit-card p-4 p-md-5">
+        <h2 class="mb-4 text-primary fw-bold">Editar Mapa</h2>
+        <h5 class="text-muted mb-4 small text-uppercase">Submissão Atual: {{ submission.map_name }}</h5>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="alert alert-info border-0 shadow-sm mb-4">
+                <p class="mb-2 small fw-bold text-uppercase">Segurança</p>
+                <label class="form-label small">Introduz o teu código de 10 dígitos para autorizar as alterações:</label>
+                <input type="text" name="token" class="form-control form-control-lg border-primary" placeholder="Token de 10 caracteres" required>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Nome do Mapa</label>
+                <input type="text" name="map_name" class="form-control" value="{{ submission.map_name }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Descrição / Notas</label>
+                <textarea name="description" class="form-control" rows="3">{{ submission.description }}</textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Nova Data da Sessão</label>
+                <input type="date" name="request_date" class="form-control" value="{{ submission.request_date|date:'Y-m-d' }}">
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg fw-bold">Guardar Alterações</button>
+                <a href="{% url 'index' %}" class="btn btn-link text-muted">Cancelar e Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
