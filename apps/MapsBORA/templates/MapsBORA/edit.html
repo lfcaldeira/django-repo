@@ -53,6 +53,12 @@
                 <textarea name="description" class="form-control" rows="3">{{ submission.description }}</textarea>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label fw-bold small">Map URL (Optional)</label>
+                <input type="url" name="map_url" class="form-control" value="{{ submission.map_url|default:'' }}" placeholder="https://...">
+                <div class="form-text small text-muted">You can add the link to the map here once it's available.</div>
+            </div>
+
             <div class="mb-4">
                 <label class="form-label fw-bold small text-success text-uppercase">Reschedule Ride (Tuesday Only)</label>
                 <div class="slot-machine-container">
