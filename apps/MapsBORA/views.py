@@ -57,6 +57,14 @@ def index(request):
 
 def edit_submission(request, id):
     submission = get_object_or_404(Submission, id=id)
+    
+    # Generate the Tuesday list for the picker
+    next_tuesdays = []
+    today = datetime.now().date()
+    days_until_tuesday = (1 - today.weekday()) % 7
+    first_tuesday = today + timedelta(days=days_until_tuesday)
+    for i in range(10):
+        next_tuesdays.append(first_tuesday + timedelta(weeks=i))
 
     if request.method == 'POST':
         word = request.POST.get('token')
@@ -66,13 +74,16 @@ def edit_submission(request, id):
             submission.description = request.POST.get('description')
             submission.request_date = request.POST.get('request_date')
             submission.save()
-            messages.success(request, "Map updated successfully")
+            messages.success(request, "Map updated successfully!")
             return redirect('index')
         else:
-            messages.error(request, "Invalid token! You cannot edit this map.")
+            messages.error(request, "Invalid token! Access denied.")
             return redirect('index')
 
-    return render(request, 'MapsBORA/edit.html',{'submissions': submission})
+    return render(request, 'MapsBORA/edit.html', {
+        'submission': submission, # Use singular 'submission' to match your previous edit.html
+        'next_tuesdays': next_tuesdays
+    })
 
 @staff_member_required
 def approve_submission(request, id):
