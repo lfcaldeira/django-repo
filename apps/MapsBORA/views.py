@@ -40,6 +40,7 @@ def edit_submission(request, id):
 
     if request.method == 'POST':
         word = request.POST.get('randomword')
+        messages.success(request,"this is the token"+randomword)
 
         if word == submission.randomword:
             submission.mapper_name = request.POST.get('mapper_name')
