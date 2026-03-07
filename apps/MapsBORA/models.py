@@ -1,4 +1,5 @@
 from django.db import models
+import random, string
 
 class Submission(models.Model):
     STATUS_CHOICES = [
@@ -13,13 +14,12 @@ class Submission(models.Model):
     description = models.CharField(max_length=400)
     submitted_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
+    randomword = models.CharField(max_length=10)
 
     def __str__(self):
-        return f"{self.mapper_name} - {map_name}"
+        return f"{self.mapper_name} - {self.map_name}"
 
     class Meta:
         verbose_name_plural = "submissions"
         verbose_name = "submission"
         ordering = ['submitted_date']
-    
-

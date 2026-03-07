@@ -74,6 +74,11 @@
                     <td colspan="4" style="text-align:center;">No submissions found in the queue.</td>
                 </tr>
                 {% endfor %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div style="padding: 20px; background: #d4edda; color: #155724;">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
