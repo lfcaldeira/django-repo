@@ -20,13 +20,13 @@ def index(request):
         submitted_date = request.POST.get('submitted_date')
         status = 'Pending'
 
-        Submission.objects.create(
+        new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
             submitted_date=submitted_date,
             status=status,
             randomword=get_token(10)
         )
-        messages.success(request, f'Submission successful! Your tracking code is: {edit_submission.randomword}')
+        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.randomword}')
         return redirect('index')
 
     submissions = Submission.objects.all().order_by('submitted_date')
