@@ -26,7 +26,7 @@ def index(request):
             status=status,
             randomword=randomword(10)
         )
-        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.randomword}')
+        messages.success(request, f'Submission successful! Your tracking code is: {edit_submission.randomword}')
         return redirect('index')
 
     submissions = Submission.objects.all().order_by('submitted_date')
