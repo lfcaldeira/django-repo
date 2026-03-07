@@ -12,7 +12,6 @@
     <textarea name="description">{{ submission.description }}</textarea>
 
     <label>New Request Date</label>
-    <textarea name="request_date">{{submission.request_date}}</textarea>
-    
+    <input type="date" name="request_date" value="{{ submission.request_date|date:'Y-m-d' }}">    
     <button type="submit">Save Changes</button>
 </form>
