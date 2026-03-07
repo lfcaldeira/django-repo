@@ -62,15 +62,12 @@
                 </tr>
             </thead>
             <tbody>
-                <td>
-                    <a href="{% url 'edit_submission' sub.id %}">Edit this map</a>
-                </td>
                 {% for sub in submissions %}
                 <tr>
                     <td><strong>{{ sub.map_name }}</strong></td>
-                    <td>{{ sub.location }}</td>
                     <td>{{ sub.submitted_date|date:"Y-m-d" }}</td>
                     <td class="status-{{ sub.status }}">{{ sub.get_status_display }}</td>
+                    <td> <a href="{% url 'edit_submission' sub.id %}">Edit Map</a></td>
                 </tr>
                 {% empty %}
                 <tr>
