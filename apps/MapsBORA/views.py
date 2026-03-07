@@ -24,9 +24,9 @@ def index(request):
             map_name = f"{map_name} (by {mapper_name})", 
             submitted_date=submitted_date,
             status=status,
-            randomword=get_token(10)
+            token=get_token(10)
         )
-        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.randomword}')
+        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token}')
         return redirect('index')
 
     submissions = Submission.objects.all().order_by('submitted_date')
@@ -39,10 +39,10 @@ def edit_submission(request, id):
     submission = get_object_or_404(Submission, id=id)
 
     if request.method == 'POST':
-        word = request.POST.get('randomword')
+        word = request.POST.get('token')
         messages.success(request,"this is the token"+word)
 
-        if word == submission.randomword:
+        if word == submission.token:
             submission.mapper_name = request.POST.get('mapper_name')
             submission.map_name = request.POST.get('map_name')
             submission.description = request.POST.get('description')
