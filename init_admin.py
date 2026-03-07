@@ -8,12 +8,24 @@ django.setup()
 User = get_user_model()
 
 # fetch env variables or gets default values
-username = os.getenv('DJANGO_ADMIN_USER', 'admin')
+username = os.getenv('DJANGO_ADMIN_USER')
 email = os.getenv('DJANGO_ADMIN_EMAIL', 'admin@example.com')
-password = os.getenv('DJANGO_ADMIN_PASSWORD', 'asdfasdf')
+password = os.getenv('DJANGO_ADMIN_PASSWORD')
 
-if not User.objects.filter(username=username).exists():
-    print(f"creating user: {username}")
-    User.objects.create_superuser(username, email, password)
-else:
-    print(f"admin user: {username} already exists.")
+def create_admin():
+    if not username or password:
+        print("ERROR: DJANGO_ADMIN_USER or DJANGO_ADMIN_PASSWORD not set. Skipping admin creation.")
+        return
+    if not User.objects.filter(username=username).exists():
+        print(f"Creating superuser: {username}...")
+        User.objects.create_superuser(
+            username=username, 
+            email=email, 
+            password=password
+        )
+        print("Superuser created successfully.")
+    else:
+        print(f"Admin user '{username}' already exists. No action taken.")
+
+if __name__ == "__main__":
+    create_admin()
