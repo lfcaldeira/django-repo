@@ -14,7 +14,7 @@ class Submission(models.Model):
     description = models.CharField(max_length=400)
     submitted_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
-    randomword = models.CharField(max_length=10)
+    randomword = models.CharField(max_length=10,null=True, blank=True)
 
     def __str__(self):
         return f"{self.mapper_name} - {self.map_name}"
