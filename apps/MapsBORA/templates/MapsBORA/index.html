@@ -67,7 +67,13 @@
                     <td><strong>{{ sub.map_name }}</strong></td>
                     <td>{{ sub.request_date|date:"Y-m-d" }}</td>
                     <td class="status-{{ sub.status }}">{{ sub.get_status_display }}</td>
-                    <td> <a href="{% url 'edit_submission' sub.id %}">Edit Map</a></td>
+                    <td> <a href="{% url 'edit_submission' sub.id %}">Edit Map</a>
+                    {% if user.is_staff %}
+                    |   <a href="{% url 'approve_submission' sub.id %}" style="color: green;">Approve</a> |
+                        <a href="{% url 'recover_token' sub.id %}" style="color: orange;">View Token</a> |
+                        <a href="{% url 'delete_submission' sub.id %}" style="color: red;" onclick="return confirm('Are you sure?')">Delete</a>
+                    {% endif %}
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
