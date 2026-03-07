@@ -1,10 +1,15 @@
 from django.contrib import admin
 
+
 # Register your models here.
 from .models import Submission
 
-class MapSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('mapper_name','map_name','status','request_date')
-    list_filter = ('status','request_date')
-    search_fields = ('mapper_name','status','request_date')
+
+class SubmissionAdmin(admin.ModelAdmin):
+    list_display = ('map_name', 'request_date', 'status', 'token','mapper')
+    list_filter = ('status', 'request_date')
+    search_fields = ('map_name', 'mapper_name','status')
     date_hierarchy = ('request_date')
+    list_editable = ('status')
+
+admin.site.register(Submission, SubmissionAdmin)
