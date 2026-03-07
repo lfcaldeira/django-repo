@@ -73,6 +73,7 @@ def edit_submission(request, id):
             submission.map_name = request.POST.get('map_name')
             submission.description = request.POST.get('description')
             submission.request_date = request.POST.get('request_date')
+            submission.map_url = request.POST.get('map_url')
             submission.save()
             messages.success(request, "Map updated successfully!")
             return redirect('index')
