@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 
 def get_token(length=10):
-   letters = string.ascii_lowercase + string.digits # Adicionei números para ser mais seguro
+   letters = string.ascii_lowercase + string.digits 
    return ''.join(random.choice(letters) for i in range(length))
 
 def submission_list(request):
