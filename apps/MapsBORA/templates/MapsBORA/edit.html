@@ -1,0 +1,15 @@
+<h2>Edit Map: {{ submission.map_name }}</h2>
+<form method="POST">
+    {% csrf_token %}
+    <p>To authorize changes, please enter the 10-letter token you received:</p>
+    <input type="text" name="token" placeholder="Enter Token" required>
+    
+    <hr>
+    <label>Map Name:</label>
+    <input type="text" name="map_name" value="{{ submission.map_name }}">
+    
+    <label>Description:</label>
+    <textarea name="description">{{ submission.description }}</textarea>
+    
+    <button type="submit">Save Changes</button>
+</form>
