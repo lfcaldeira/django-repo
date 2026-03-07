@@ -10,6 +10,6 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_filter = ('status', 'request_date')
     search_fields = ('map_name', 'mapper_name','status')
     date_hierarchy = ('request_date')
-    list_editable = ('status')
+    list_editable = ('status',)
 
 admin.site.register(Submission, SubmissionAdmin)
