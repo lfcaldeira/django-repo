@@ -42,7 +42,7 @@ def index(request):
 
         new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
-            map_url = map_url
+            map_url = map_url,
             request_date=request_date,
             status=status,
             token=get_token(10)
