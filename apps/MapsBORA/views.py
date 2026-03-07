@@ -20,8 +20,8 @@ def index(request):
         request_date = request.POST.get('request_date')
         status = 'Pending'
 
-        if Submission.objects.filter(request_date=request_date).exists():
-            messages.error(request, "Date is already chosen, please pick another date")
+        if Submission.objects.filter(request_date=request_date).exists() or Submission.objects.filter(map_name).exists():
+            messages.error(request, "Date or Map name already on list, please pick fill out another form")
             return redirect("index")
 
         new_submission = Submission.objects.create(
