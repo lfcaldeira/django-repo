@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Submission
 import random, string
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 def get_token(length=10):
    letters = string.ascii_lowercase + string.digits # Adicionei números para ser mais seguro
@@ -57,3 +59,25 @@ def edit_submission(request, id):
             return redirect('index')
 
     return render(request, 'MapsBORA/edit.html',{'submissions': submission})
+
+@staff_member_required
+def approve_submission(request, id):
+    submission = get_object_or_404(Submission, id=id)
+    submission.status = 'approved'
+    submission.save()
+    messages.success(request, f"Map '{submission.map_name}' approved!")
+    return redirect('index')
+
+@staff_member_required
+def delete_submission(request, id):
+    submission = get_object_or_404(Submission, id=id)
+    map_name = submission.map_name
+    submission.delete()
+    messages.warning(request, f"Map '{map_name}' was removed from the list.")
+    return redirect('index')
+
+@staff_member_required
+def recover_token(request, id):
+    submission = get_object_or_404(Submission, id=id)
+    messages.info(request, f"The token for '{submission.map_name}' is: {submission.token}")
+    return redirect('index')
