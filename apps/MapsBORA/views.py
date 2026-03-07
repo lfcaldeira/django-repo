@@ -85,6 +85,20 @@ def edit_submission(request, id):
         'next_tuesdays': next_tuesdays
     })
 
+def delete_with_token(request, id):
+    submission = get_object_or_404(Submission, id=id)
+    if request.method == 'POST':
+        user_token = request.POST.get('token')
+        if user_token == submission.token:
+            map_name = submission.map_name
+            submission.delete()
+            messages.warning(request, f"Mission Aborted: '{map_name}' was removed from the queue.")
+            return redirect('index')
+        else:
+            messages.error(request, "Invalid token! You cannot delete this submission.")
+            return redirect('index')
+    return redirect('index')
+
 @staff_member_required
 def approve_submission(request, id):
     submission = get_object_or_404(Submission, id=id)

@@ -68,6 +68,12 @@
 
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">SAVE CHANGES</button>
+                <button type="submit" 
+                        formaction="{% url 'delete_with_token' submission.id %}" 
+                        class="btn btn-outline-danger btn-sm mt-3" 
+                        onclick="return confirm('Are you sure you want to PERMANENTLY delete this map from the queue?')">
+                        ❌ CANCEL & DELETE SUBMISSION
+                </button>
                 <a href="{% url 'index' %}" class="btn btn-link text-muted">Go back to Queue</a>
             </div>
         </form>
