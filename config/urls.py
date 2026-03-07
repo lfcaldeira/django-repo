@@ -20,5 +20,4 @@ from django.urls import path, include
 urlpatterns = [
     path('', include("apps.MapsBORA.urls")),
     path('admin/', admin.site.urls),
-    path('delete-my-map/<int:id>/', views.delete_with_token, name='delete_with_token'),
 ]
