@@ -13,7 +13,7 @@ email = os.getenv('DJANGO_ADMIN_EMAIL', 'admin@example.com')
 password = os.getenv('DJANGO_ADMIN_PASSWORD')
 
 def create_admin():
-    if not username or password:
+    if not username or not password:
         print("ERROR: DJANGO_ADMIN_USER or DJANGO_ADMIN_PASSWORD not set. Skipping admin creation.")
         return
     if not User.objects.filter(username=username).exists():
