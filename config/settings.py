@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # old SECRET_KEY = 'django-insecure-qbd#s&$d)eu-fmb0bjsh)9gv4#goe&p*tyjtlx+0yy_w!0=m6d'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-qbd#s&$d)eu-fmb0bjsh)9gv4#goe&p*tyjtlx+0yy_w!0=m6d')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') #, 'django-insecure-qbd#s&$d)eu-fmb0bjsh)9gv4#goe&p*tyjtlx+0yy_w!0=m6d')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -131,6 +131,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
