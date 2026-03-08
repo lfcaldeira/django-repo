@@ -27,6 +27,18 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+csrf_origins = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "")
+if csrf_origins:
+    CSRF_TRUSTED_ORIGINS = csrf_origins.split(",")
+else:
+    CSRF_TRUSTED_ORIGINS = []
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://mapsbora.homelab',
+    'http://mapsbora.homelab',
+    'https://lisboramaps.cc',
+    'http://lisboramaps.cc'
+]
 
 # Application definition
 
