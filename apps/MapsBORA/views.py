@@ -39,7 +39,10 @@ def index(request):
         if Submission.objects.filter(map_name__icontains=map_name).exists():
             messages.error(request, "This map is in the list to be ridden")
             return redirect("index")
-
+        if Submission.objects.filter(map_url__icontains=map_url).exists():
+            messages.error(request, "This map is in the list to be ridden")
+            return redirect("index")
+        
         new_submission = Submission.objects.create(
             map_name = f"{map_name} (by {mapper_name})", 
             map_url = map_url,
