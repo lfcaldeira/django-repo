@@ -50,7 +50,7 @@ def index(request):
             status=status,
             token=get_token(10)
         )
-        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token}')
+        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token} <==== PLEASE SAVE IT' )
         return redirect('index')
 
     submissions = Submission.objects.all().order_by('request_date')
