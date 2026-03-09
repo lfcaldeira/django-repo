@@ -24,9 +24,6 @@ def index(request):
     days_until_tuesday = (1 - today.weekday()) % 7
     first_tuesday = today + timedelta(days=days_until_tuesday)
 
-    next_rides = Submission.objects.filter(request_date__gte=today,
-                                           status='approved').order_by('request_date')
-
     for i in range(10):
         next_tuesdays.append(first_tuesday+timedelta(weeks=i))
 
@@ -58,7 +55,8 @@ def index(request):
         messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token} <==== PLEASE SAVE IT' )
         return redirect('index')
 
-    submissions = Submission.objects.all().order_by('request_date')
+    #submissions = Submission.objects.all().order_by('request_date')
+    submissions = Submission.objects.filter(request_date__gte=today, status='approved').order_by('request_date')
 
     return render(request, 'MapsBORA/index.html', {
         'submissions': submissions,
