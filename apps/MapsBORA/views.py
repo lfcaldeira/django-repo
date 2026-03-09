@@ -56,7 +56,7 @@ def index(request):
         return redirect('index')
 
     #submissions = Submission.objects.all().order_by('request_date')
-    submissions = Submission.objects.filter(request_date__gte=today, status='approved').order_by('request_date')
+    submissions = Submission.objects.filter(request_date__gte=today, status__in=['approved', 'pending']).order_by('request_date')
 
     return render(request, 'MapsBORA/index.html', {
         'submissions': submissions,
