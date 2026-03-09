@@ -25,7 +25,7 @@ def index(request):
     first_tuesday = today + timedelta(days=days_until_tuesday)
 
     next_rides = Submission.objects.filter(request_date__gte=today,
-                                           status='approved').order_by(request_date)
+                                           status='approved').order_by('request_date')
 
     for i in range(10):
         next_tuesdays.append(first_tuesday+timedelta(weeks=i))
