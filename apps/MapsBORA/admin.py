@@ -35,4 +35,5 @@ class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('map_name', 'mapper_name','status','map_url')
     date_hierarchy = ('request_date')
     list_editable = ('status',)
+    actions = [export_as_csv]
 
