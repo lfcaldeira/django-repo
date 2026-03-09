@@ -1,24 +1,39 @@
-from django.contrib import admin
 import csv
+from django.contrib import admin
 from django.http import HttpResponse
+from django.utils import timezone
+from datetime import datetime
 # Register your models here.
 from .models import Submission
 
+
 @admin.action(description='Export selected rides to CSV')
 def export_as_csv(modeladmin, request, queryset):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="mapsbora_rides.csv"'
+    today = datetime.today().strftime('%Y-%m-%d')
+    filename = f"mapsbora_rides_{today}.csv"
+    response = HttpResponse(content_type='text/csv; charset=utf-8')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
     writer = csv.writer(response)
     
-    # Cabeçalhos
+    # Headers
     writer.writerow(['Map Name', 'Date', 'Status', 'Mapper', 'URL'])
     
-    # Dados
+    # Data
     for obj in queryset:
-        writer.writerow([obj.map_name, obj.request_date, obj.status, obj.mapper_name, obj.map_url])
+        writer.writerow([obj.map_name, 
+                         obj.request_date, 
+                         obj.status, 
+                         obj.mapper_name, 
+                         obj.map_url
+                         ])
     
     return response
 
+@admin.register(Ride)
+class RideAdmin(admin.ModelAdmin):
+    list_display = ('map_name', 'request_date', 'status', 'mapper_name')
+    list_filter = ('status', 'request_date')
+    actions = [export_as_csv]
 
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('map_name', 'request_date', 'status', 'token','mapper_name','map_url')
