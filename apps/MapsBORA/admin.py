@@ -6,7 +6,6 @@ from datetime import datetime
 # Register your models here.
 from .models import Submission
 
-
 @admin.action(description='Export selected rides to CSV')
 def export_as_csv(modeladmin, request, queryset):
     today = datetime.today().strftime('%Y-%m-%d')
@@ -29,7 +28,7 @@ def export_as_csv(modeladmin, request, queryset):
     
     return response
 
-@admin.register(Ride)
+@admin.register(Submission)
 class RideAdmin(admin.ModelAdmin):
     list_display = ('map_name', 'request_date', 'status', 'mapper_name')
     list_filter = ('status', 'request_date')
