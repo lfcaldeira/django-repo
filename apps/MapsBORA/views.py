@@ -24,6 +24,9 @@ def index(request):
     days_until_tuesday = (1 - today.weekday()) % 7
     first_tuesday = today + timedelta(days=days_until_tuesday)
 
+    next_rides = Submission.objects.filter(request_date__gte=today,
+                                           status='approved').order_by(request_date)
+
     for i in range(10):
         next_tuesdays.append(first_tuesday+timedelta(weeks=i))
 
@@ -107,9 +110,7 @@ def delete_with_token(request, id):
             return redirect('index')
     return redirect('index')
 
-def home(request):
-    active_rides = Submission.objects.filter(request_date__gte=timezone.now().date(),status='approved').order_by('request_date')
-    return render(request, 'index.html', {'rides':active_rides})
+
 
 @staff_member_required
 def approve_submission(request, id):
