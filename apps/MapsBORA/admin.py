@@ -30,7 +30,7 @@ def export_as_csv(modeladmin, request, queryset):
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ('map_name', 'request_date', 'status', 'token','mapper_name','map_url')
+    list_display = ('mapper_name','map_name','map_url','request_date', 'status', 'token')
     list_filter = ('status', 'request_date','map_url')
     search_fields = ('map_name', 'mapper_name','status','map_url')
     date_hierarchy = ('request_date')

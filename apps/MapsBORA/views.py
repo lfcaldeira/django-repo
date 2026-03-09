@@ -5,6 +5,7 @@ import random, string
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 def get_token(length=10):
@@ -44,7 +45,8 @@ def index(request):
             return redirect("index")
         
         new_submission = Submission.objects.create(
-            map_name = f"{map_name} (by {mapper_name})", 
+            map_name = map_name,
+            mapper_name = mapper_name, 
             map_url = map_url,
             request_date=request_date,
             status=status,
@@ -104,6 +106,10 @@ def delete_with_token(request, id):
             messages.error(request, "Invalid token! You cannot delete this submission.")
             return redirect('index')
     return redirect('index')
+
+def home(request):
+    active_rides = Submission.objects.filter(request_date__gte=timezone.now().date(),status='approved').order_by('request_date')
+    return render(request, 'index.html', {'rides':active_rides})
 
 @staff_member_required
 def approve_submission(request, id):
