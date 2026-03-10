@@ -52,7 +52,10 @@ def index(request):
             status=status,
             token=get_token(10)
         )
-        messages.success(request, f'Submission successful! Your tracking code is: {new_submission.token} <==== PLEASE SAVE IT' )
+
+        link_with_token = f"https://lisboramaps.cc/edit/{new_submission.id}/{new_submission.token}"
+
+        messages.success(request, f'Submission successful! save this link: {link_with_token} to edit the map request later')
         return redirect('index')
 
     #submissions = Submission.objects.all().order_by('request_date')
@@ -63,9 +66,13 @@ def index(request):
         'next_tuesdays': next_tuesdays
     })
 
-def edit_submission(request, id):
+def edit_submission(request, id, token):
     submission = get_object_or_404(Submission, id=id)
     
+    if submission.token != token:
+        messages.error(request, "Invalid access token")
+        return redirect('index')
+
     # Generate the Tuesday list for the picker
     next_tuesdays = []
     today = datetime.now().date()
