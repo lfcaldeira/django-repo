@@ -106,10 +106,10 @@
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="btn-group">
-                                        <a href="{% url 'edit_submission' sub.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                        <a href="{% url 'edit_submission' sub.id sub.token %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                                         {% if user.is_staff %}
-                                            <a href="{% url 'approve_submission' sub.id %}" class="btn btn-sm btn-success">Aprovar</a>
-                                            <a href="{% url 'delete_submission' sub.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Apagar?')">X</a>
+                                            <a href="{% url 'approve_submission' sub.id %}" class="btn btn-sm btn-success">Approve</a>
+                                            <a href="{% url 'delete_submission' sub.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">X</a>
                                         {% endif %}
                                     </div>
                                 </td>
