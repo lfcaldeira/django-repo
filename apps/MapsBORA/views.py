@@ -32,7 +32,7 @@ def index(request):
         mapper_name = request.POST.get('mapper_name')
         map_url = request.POST.get('map_url')
         request_date = request.POST.get('request_date')
-        status = 'Pending'
+        status = 'pending'
 
         if Submission.objects.filter(request_date=request_date).exists():
             messages.error(request, "This Tuesday is already occupied")
