@@ -96,7 +96,7 @@ def edit_submission(request, id, token):
         if Submission.objects.filter(request_date=new_date).exclude(id=id).exists():
             messages.error(request, "That Tuesday is already taken by another map.")
             return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
-        if Submission.objects.filter(map_url=new_url, status__in=['pending', 'approved']).exclude(id=id).exists():
+        if Submission.objects.filter(map_url=new_map_url, status__in=['pending', 'approved']).exclude(id=id).exists():
             messages.error(request, "This map URL is already in the queue!")
             return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
         if word == submission.token:
@@ -105,6 +105,8 @@ def edit_submission(request, id, token):
             submission.request_date = new_date
             submission.map_url = new_map_url
             if request.FILES.get('gpx_file'):
+                if submission.gpx_file:
+                    submission.gpx_file.delete(save=False)
                 submission.gpx_file = request.FILES.get('gpx_file')
             submission.save()
             messages.success(request, "Map updated successfully!")

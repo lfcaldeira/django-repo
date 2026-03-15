@@ -33,7 +33,7 @@
         <h2 class="mb-2 fw-bold text-dark">Edit Submission</h2>
         <p class="text-muted mb-4 small">Currently: <strong>{{ submission.map_name }}</strong></p>
         
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             
             <div class="alert alert-warning border-0 shadow-sm mb-4">
@@ -57,6 +57,13 @@
                 <label class="form-label fw-bold small">Map URL (Optional)</label>
                 <input type="url" name="map_url" class="form-control" value="{{ submission.map_url|default:'' }}" placeholder="https://...">
                 <div class="form-text small text-muted">You can add the link to the map here once it's available.</div>
+            </div>
+            <div class="mb-3">
+            <label for="gpx_file" class="form-label">Ficheiro GPX (Opcional)</label>
+                {% if submission.gpx_file %}
+                    <p class="text-muted small">Atual: {{ submission.gpx_file.name }}</p>
+                {% endif %}
+                <input type="file" name="gpx_file" id="gpx_file" class="form-control" accept=".gpx">
             </div>
 
             <div class="mb-4">
