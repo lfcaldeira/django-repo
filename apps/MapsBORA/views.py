@@ -7,6 +7,25 @@ from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.files.base import ContentFile
+import xml.etree.ElementTree as ET
+from django.core.exceptions import ValidationError
+
+def validate_gpx_file(request, gpx_file):
+    if not gpx_file:
+        return None
+    if gpx_file.size > 5 * 1024 * 1024:
+        return False
+    
+    try:
+        content = gpx_file.read(1024)
+        gpx_file.seek(0)
+        if b'<gpx' not in content.lower():
+            messages.error(request, "GPX is not valid")
+            return False
+        return gpx_file
+    except:
+        messages.error(request, "Error reading GPX file")
+        return False
 
 
 def get_token(length=10):
@@ -38,6 +57,15 @@ def index(request):
 
         existing_maps = Submission.objects.filter(map_url__icontains=map_url)
 
+        if not map_url and not gpx_f:
+            messages.error(request, "You must fill out MapURL or upload a GPX File")
+            return redirect("index")
+        
+        gpx_to_save = validate_gpx_file(request, gpx_f)
+
+        if gpx_to_save is False:
+            return redirect("index")
+
         if existing_maps.filter(status__in=['pending', 'approved']).exists():
             messages.error(request, "This map is already in the queue to be ridden")
             return redirect("index")
@@ -47,8 +75,6 @@ def index(request):
         if Submission.objects.filter(map_name__icontains=map_name).exists():
             messages.error(request, "Map name already exists")
             return redirect("index")
-        if gpx_f: 
-            gpx_to_save = gpx_f
         
         new_submission = Submission.objects.create(
             map_name = map_name,
@@ -104,10 +130,17 @@ def edit_submission(request, id, token):
             submission.description = request.POST.get('description')
             submission.request_date = new_date
             submission.map_url = new_map_url
-            if request.FILES.get('gpx_file'):
+            gpx_file = request.FILES.get('gpx_file')
+            gpx_to_save = validate_gpx_file(request, gpx_file)
+
+            if gpx_to_save is False:
+                return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
+            
+            if gpx_to_save: # if returned None
                 if submission.gpx_file:
                     submission.gpx_file.delete(save=False)
-                submission.gpx_file = request.FILES.get('gpx_file')
+                submission.gpx_file = gpx_to_save
+
             submission.save()
             messages.success(request, "Map updated successfully!")
             return redirect('index')
