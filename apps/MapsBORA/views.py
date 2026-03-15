@@ -151,6 +151,12 @@ def edit_submission(request, id, token=None):
                 if submission.gpx_file:
                     submission.gpx_file.delete(save=False)
                 submission.gpx_file = gpx_to_save
+                submission.map_url = ""
+            elif new_map_url and new_map_url != submission.map_url:
+                if submission.gpx_file:
+                    submission.gpx_file.delete(save=False)
+                submission.gpx_file = None
+                submission.map_url = new_map_url
 
             submission.save()
             messages.success(request, "Map updated successfully!")
