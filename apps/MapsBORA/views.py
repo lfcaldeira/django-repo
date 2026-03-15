@@ -93,7 +93,6 @@ def index(request):
         messages.success(request, f'Submission successful! save this link: {link_with_token} to edit the map request later')
         return redirect('index')
 
-    #submissions = Submission.objects.all().order_by('request_date')
     submissions = Submission.objects.filter(request_date__gte=today, status__in=['approved', 'pending']).order_by('request_date')
 
     return render(request, 'MapsBORA/index.html', {
@@ -101,7 +100,7 @@ def index(request):
         'next_tuesdays': next_tuesdays
     })
 
-def edit_submission(request, id, token):
+def edit_submission(request, id, token=None):
     submission = get_object_or_404(Submission, id=id)
     
     if token:
