@@ -102,9 +102,18 @@ def index(request):
 def edit_submission(request, id, token):
     submission = get_object_or_404(Submission, id=id)
     
-    if submission.token != token:
-        messages.error(request, "Invalid access token")
-        return redirect('index')
+    if token:
+        if submission.token == token:
+            request.session[f'auth_{id}'] = token
+            return redirect('edit_submission', id=id)
+        else:
+            messages.error(request, "Invalid access token")
+            return redirect('index')
+        
+    session_token = request.session.get(f'auth_{id}')
+    if session_token != submission.token:
+        messages.error(request, "Access denied. Please use your original edit link")
+        return redirect("index")
 
     # Generate the Tuesday list for the picker
     next_tuesdays = []
