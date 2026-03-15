@@ -154,16 +154,16 @@ def edit_submission(request, id, token=None):
                 submission.gpx_file = gpx_to_save
                 submission.map_url = ""
                 messages.info(request, "GPX uploaded. Map URL cleared for priority.")
+            
             elif delete_gpx_flag: #user clicked to delete GPX file
                 if submission.gpx_file:
                     submission.gpx_file.delete(save=False)
+                submission.gpx_file = None
                 submission.map_url = new_map_url
-                messages.info(request, "GPX File removed.")
+                messages.info(request, "GPX File removed. Map URL updated")
             else:
                 if not submission.gpx_file:
                     submission.map_url = new_map_url
-                else:
-                    pass 
 
             submission.save()
             messages.success(request, "Map updated successfully!")
