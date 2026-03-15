@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.core.files.base import ContentFile
 import xml.etree.ElementTree as ET
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 def validate_gpx_file(request, gpx_file):
     if not gpx_file:
