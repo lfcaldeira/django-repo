@@ -43,7 +43,7 @@
         <div class="col-lg-4">
             <div class="card p-4">
                 <h3 class="h5 mb-4 fw-bold">New map submission</h3>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Your nickname</label>
@@ -59,7 +59,10 @@
                         <label class="form-label small fw-bold">Map URL</label>
                         <input type="text" name="map_url" class="form-control" placeholder="Map URL">
                     </div>
-
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-success">GPX File (Optional)</label>
+                        <input type="file" name="gpx_file" class="form-control" accept=".gpx">
+                    </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-primary text-uppercase">Choose a Tuesday to lead (Slot Picker)</label>
                         <select name="request_date" class="form-select slot-picker" required>
@@ -110,6 +113,9 @@
                                         {% if user.is_staff %}
                                             <a href="{% url 'approve_submission' sub.id %}" class="btn btn-sm btn-success">Approve</a>
                                             <a href="{% url 'delete_submission' sub.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">X</a>
+                                            {% if sub.is_repeated %}
+                                                <span style="color: orange;">⚠️ Warning: This URL was already completed before!</span>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </td>

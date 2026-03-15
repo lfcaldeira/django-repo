@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.core.files.base import ContentFile
 
 
 def get_token(length=10):
@@ -31,23 +32,29 @@ def index(request):
         map_name = request.POST.get('map_name')
         mapper_name = request.POST.get('mapper_name')
         map_url = request.POST.get('map_url')
+        gpx_f = request.FILES.get('gpx_file')
         request_date = request.POST.get('request_date')
         status = 'pending'
 
+        existing_maps = Submission.objects.filter(map_url__icontains=map_url)
+
+        if existing_maps.filter(status__in=['pending', 'approved']).exists():
+            messages.error(request, "This map is already in the queue to be ridden")
+            return redirect("index")
         if Submission.objects.filter(request_date=request_date).exists():
             messages.error(request, "This Tuesday is already occupied")
             return redirect("index")
         if Submission.objects.filter(map_name__icontains=map_name).exists():
-            messages.error(request, "This map is in the list to be ridden")
+            messages.error(request, "Map name already exists")
             return redirect("index")
-        if Submission.objects.filter(map_url__icontains=map_url).exists():
-            messages.error(request, "This map is in the list to be ridden")
-            return redirect("index")
+        if gpx_f: 
+            gpx_to_save = gpx_f
         
         new_submission = Submission.objects.create(
             map_name = map_name,
             mapper_name = mapper_name, 
             map_url = map_url,
+            gpx_file = gpx_to_save,
             request_date=request_date,
             status=status,
             token=get_token(10)
@@ -84,11 +91,21 @@ def edit_submission(request, id, token):
     if request.method == 'POST':
         word = request.POST.get('token')
 
+        new_map_url = request.POST.get('map_url')
+        new_date = request.POST.get('request_date')
+        if Submission.objects.filter(request_date=new_date).exclude(id=id).exists():
+            messages.error(request, "That Tuesday is already taken by another map.")
+            return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
+        if Submission.objects.filter(map_url=new_url, status__in=['pending', 'approved']).exclude(id=id).exists():
+            messages.error(request, "This map URL is already in the queue!")
+            return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
         if word == submission.token:
             submission.map_name = request.POST.get('map_name')
             submission.description = request.POST.get('description')
-            submission.request_date = request.POST.get('request_date')
-            submission.map_url = request.POST.get('map_url')
+            submission.request_date = new_date
+            submission.map_url = new_map_url
+            if request.FILES.get('gpx_file'):
+                submission.gpx_file = request.FILES.get('gpx_file')
             submission.save()
             messages.success(request, "Map updated successfully!")
             return redirect('index')
@@ -114,8 +131,6 @@ def delete_with_token(request, id):
             messages.error(request, "Invalid token! You cannot delete this submission.")
             return redirect('index')
     return redirect('index')
-
-
 
 @staff_member_required
 def approve_submission(request, id):
