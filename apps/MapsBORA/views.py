@@ -86,7 +86,9 @@ def index(request):
             token=get_token(10)
         )
 
-        link_with_token = f"https://lisboramaps.cc/edit/{new_submission.id}/{new_submission.token}"
+        token_url = reverse('edit_submission_with_token', kwargs={'id': new_submission.id, 'token':new_submission.token})
+        link_with_token = request.build_absolute_uri(token_url)
+        #link_with_token = f"https://lisboramaps.cc/edit/{new_submission.id}/{new_submission.token}"
 
         messages.success(request, f'Submission successful! save this link: {link_with_token} to edit the map request later')
         return redirect('index')
