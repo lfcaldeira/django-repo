@@ -130,6 +130,7 @@ def edit_submission(request, id, token=None):
 
         new_map_url = request.POST.get('map_url')
         new_date = request.POST.get('request_date')
+        delete_gpx_flag = request.POST.get('delete_gpx') == 'true'
         if Submission.objects.filter(request_date=new_date).exclude(id=id).exists():
             messages.error(request, "That Tuesday is already taken by another map.")
             return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
@@ -152,11 +153,17 @@ def edit_submission(request, id, token=None):
                     submission.gpx_file.delete(save=False)
                 submission.gpx_file = gpx_to_save
                 submission.map_url = ""
-            elif new_map_url and new_map_url != submission.map_url:
+                messages.info(request, "GPX uploaded. Map URL cleared for priority.")
+            elif delete_gpx_flag: #user clicked to delete GPX file
                 if submission.gpx_file:
                     submission.gpx_file.delete(save=False)
-                submission.gpx_file = None
                 submission.map_url = new_map_url
+                messages.info(request, "GPX File removed.")
+            else:
+                if not submission.gpx_file:
+                    submission.map_url = new_map_url
+                else:
+                    pass 
 
             submission.save()
             messages.success(request, "Map updated successfully!")
