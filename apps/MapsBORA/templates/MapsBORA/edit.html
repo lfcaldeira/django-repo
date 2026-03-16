@@ -57,8 +57,7 @@
     <label class="form-label fw-bold small">Map URL</label>
     <input type="url" name="map_url" class="form-control" 
            value="{{ submission.map_url|default:'' }}" 
-           placeholder="https://..."
-           {% if submission.gpx_file %} readonly style="background-color: #e9ecef;" {% endif %}>
+           placeholder="https://...">
     
     {% if submission.gpx_file %}
         <div class="form-text text-danger small">
