@@ -148,6 +148,12 @@ def edit_submission(request, id, token=None):
             if gpx_to_save is False:
                 return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
             
+            will_be_empty = not gpx_to_save and (delete_gpx_flag or not submission.gpx_file) and not new_map_url
+
+            if will_be_empty:
+                messages.error(request, "The submission cannot be empty! Provide a Map URL or a GPX file")
+                return render(request, 'MapsBORA/edit.html', {'submission': submission, 'next_tuesdays': next_tuesdays})
+
             if gpx_to_save: # if returned None
                 if submission.gpx_file:
                     submission.gpx_file.delete(save=False)

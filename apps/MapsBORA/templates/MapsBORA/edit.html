@@ -71,7 +71,7 @@
 
 <div class="mb-3">
     <label for="gpx_file" class="form-label fw-bold small">GPX File (Optional)</label>
-    
+
     {% if submission.gpx_file %}
         <div class="card bg-light mb-2">
             <div class="card-body d-flex justify-content-between align-items-center p-2">
@@ -87,21 +87,24 @@
     {% endif %}
 
     <input type="file" name="gpx_file" id="gpx_file" class="form-control" accept=".gpx">
-    <div class="form-text small text-muted">Uploading a GPX will automatically clear the Map URL.</div>
+    
+    <div class="form-text small text-muted">
+        Uploading a GPX will automatically clear the Map URL.
+    </div>
 </div>
 
-            <div class="mb-4">
-                <label class="form-label fw-bold small text-success text-uppercase">Reschedule Ride (Tuesday Only)</label>
-                <div class="slot-machine-container">
-                    <select name="request_date" class="form-select slot-picker" required>
-                        {% for date in next_tuesdays %}
-                            <option value="{{ date|date:'Y-m-d' }}" {% if date|date:'Y-m-d' == submission.request_date|date:'Y-m-d' %}selected{% endif %}>
-                                {{ date|date:"l, F d" }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
+<div class="mb-4">
+    <label class="form-label fw-bold small text-success text-uppercase">Reschedule Ride (Tuesday Only)</label>
+    <div class="slot-machine-container">
+        <select name="request_date" class="form-select slot-picker" required>
+            {% for date in next_tuesdays %}
+                <option value="{{ date|date:'Y-m-d' }}" {% if date|date:'Y-m-d' == submission.request_date|date:'Y-m-d' %}selected{% endif %}>
+                    {{ date|date:"l, F d" }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">SAVE CHANGES</button>
