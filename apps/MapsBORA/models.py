@@ -1,5 +1,9 @@
 from django.db import models
-import random, string
+import random, string, uuid
+
+def get_gpx_path(instance, filename):
+    ext = filename.split('.')[-1]
+    return os.path.join('gpx_files/', f"{instance.uuid}.{ext}")
 
 class Submission(models.Model):
     STATUS_CHOICES = [
@@ -16,7 +20,8 @@ class Submission(models.Model):
     request_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     token = models.CharField(max_length=10,null=True, blank=True)
-    gpx_file = models.FileField(upload_to='gpx_files/', null=True, blank=True, help_text='Optional: Send the course\'s .gpx')
+    gpx_file = models.FileField(upload_to=get_gpx_path, null=True, blank=True, help_text='Optional: Send the course\'s .gpx')
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
         return f"{self.mapper_name} - {self.map_name}"
