@@ -21,7 +21,7 @@ class Submission(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     token = models.CharField(max_length=10,null=True, blank=True)
     gpx_file = models.FileField(upload_to=get_gpx_path, null=True, blank=True, help_text='Optional: Send the course\'s .gpx')
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=True)
 
     def __str__(self):
         return f"{self.mapper_name} - {self.map_name}"
